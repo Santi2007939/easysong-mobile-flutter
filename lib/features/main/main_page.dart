@@ -1,3 +1,4 @@
+import 'package:easy_song/features/home/presentation/home_page.dart';
 import 'package:flutter/material.dart';
 
 class MainPage extends StatefulWidget {
@@ -10,7 +11,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   int selectedIndex = 0;
 
-  final List<Widget> pages = [Text("Home"), Text("Favorites"), Text("Cart")];
+  final List<Widget> pages = [HomePage(), Text("Favorites"), Text("Cart")];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
