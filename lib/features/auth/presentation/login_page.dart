@@ -1,3 +1,4 @@
+import 'package:easy_song/features/main/main_page.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -26,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           ),
-      
+
           Padding(
             padding: EdgeInsets.only(right: 16, left: 16),
             child: TextField(
@@ -40,17 +41,27 @@ class _LoginPageState extends State<LoginPage> {
                       isHidden = !isHidden;
                     });
                   },
-                  icon: Icon(isHidden ? Icons.visibility_off : Icons.visibility),
+                  icon: Icon(
+                    isHidden ? Icons.visibility_off : Icons.visibility,
+                  ),
                 ),
               ),
             ),
           ),
-      
+
           Padding(
             padding: EdgeInsets.only(right: 16, left: 16),
             child: SizedBox(
               width: double.infinity,
-              child: FilledButton(onPressed: () {}, child: Text("Sign in")),
+              child: FilledButton(
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => MainPage()),
+                  );
+                },
+                child: Text("Sign in"),
+              ),
             ),
           ),
         ],
