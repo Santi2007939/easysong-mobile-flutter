@@ -9,9 +9,12 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int selectedIndex = 0;
+
+  final List<Widget> pages = [Text("Home"), Text("Favorites"), Text("Cart")];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      body: SafeArea(child: pages[selectedIndex]),
       bottomNavigationBar: NavigationBar(
         selectedIndex: selectedIndex,
         onDestinationSelected: (value) {
