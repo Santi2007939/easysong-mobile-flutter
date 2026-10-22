@@ -1,3 +1,4 @@
+import 'package:easy_song/features/auth/presentation/login_page.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingPage extends StatelessWidget {
@@ -5,16 +6,46 @@ class OnboardingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.bottomCenter,
-      children: [
-        Image.asset(
-          "assets/images/background.png",
-          height: double.infinity,
-          fit: BoxFit.cover,
-        ),
-        FilledButton(onPressed: () {}, child: Text("Get started")),
-      ],
+    return Scaffold(
+      body: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          Image.asset(
+            "assets/images/background.png",
+            height: double.infinity,
+            fit: BoxFit.cover,
+          ),
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: AlignmentGeometry.topCenter,
+                end: AlignmentGeometry.bottomCenter,
+                colors: [
+                  Colors.transparent,
+                  Theme.of(context).colorScheme.shadow,
+                ],
+              ),
+            ),
+          ),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 16, right: 16),
+              child: SizedBox(
+                width: double.infinity,
+                child: FilledButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginPage()),
+                    );
+                  },
+                  child: Text("Get started"),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

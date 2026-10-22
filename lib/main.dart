@@ -16,7 +16,7 @@ class MainApp extends StatelessWidget {
       theme: MaterialTheme(textTheme).light(),
       darkTheme: MaterialTheme(textTheme).dark(),
       debugShowCheckedModeBanner: false,
-      home: Scaffold(body: OnboardingPage()),
+      home: OnboardingPage(),
     );
   }
 }
