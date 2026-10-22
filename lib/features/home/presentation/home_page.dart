@@ -2,7 +2,7 @@ import 'package:easy_song/features/home/domain/song.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
-  const new({super.key});
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -21,9 +21,34 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: songs.length,
-      itemBuilder: (context, index) => ListTile(
-        leading: Image.network(songs[index].image),
-        title: Text(songs[index].title),
+      itemBuilder: (context, index) => Card(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16),
+                topRight: Radius.circular(16),
+              ),
+              child: Image.network(
+                songs[index].image,
+                height: 160,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(songs[index].title, style: Theme.of(context).textTheme.titleMedium),
+                  Text(songs[index].artist, style: Theme.of(context).textTheme.bodySmall),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
