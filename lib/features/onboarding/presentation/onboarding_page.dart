@@ -5,11 +5,15 @@ class OnboardingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Stack(
+      alignment: Alignment.bottomCenter,
       children: [
-        Expanded(
-          child: Image.asset("assets/images/background.png", fit: BoxFit.cover),
+        Image.asset(
+          "assets/images/background.png",
+          height: double.infinity,
+          fit: BoxFit.cover,
         ),
+        FilledButton(onPressed: () {}, child: Text("Get started")),
       ],
     );
   }
