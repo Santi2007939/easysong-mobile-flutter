@@ -10,6 +10,12 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   int selectedIndex = 0;
 
+  final Map<String, List<Icon>> icons = {
+  "home": [Icon(Icons.home), Icon(Icons.home_outlined)],
+  "favorites": [Icon(Icons.favorite), Icon(Icons.favorite_outline)],
+  "cart": [Icon(Icons.shopping_cart), Icon(Icons.shopping_cart_outlined)],
+  };
+
   final List<Widget> pages = [Text("Home"), Text("Favorites"), Text("Cart")];
   @override
   Widget build(BuildContext context) {
@@ -24,18 +30,18 @@ class _MainPageState extends State<MainPage> {
         },
         destinations: [
           NavigationDestination(
-            selectedIcon: Icon(Icons.home),
-            icon: Icon(Icons.home_outlined),
+            selectedIcon: icons["home"]![0],
+            icon: icons["home"]![1],
             label: "Home",
           ),
           NavigationDestination(
-            selectedIcon: Icon(Icons.favorite),
-            icon: Icon(Icons.favorite_outline),
+            selectedIcon: icons["favorites"]![0],
+            icon: icons["favorites"]![1],
             label: "Favorites",
           ),
           NavigationDestination(
-            selectedIcon: Icon(Icons.shopping_cart),
-            icon: Icon(Icons.shopping_cart_outlined),
+            selectedIcon: icons["cart"]![0],
+            icon: icons["cart"]![1],
             label: "Cart",
           ),
         ],
