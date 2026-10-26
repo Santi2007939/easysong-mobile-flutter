@@ -1,7 +1,4 @@
-import 'package:easy_song/features/home/application/get_songs_use_case.dart';
-import 'package:easy_song/features/home/domain/song_repository.dart';
-import 'package:easy_song/features/home/infrastructure/remote/song_api.dart';
-import 'package:easy_song/features/home/infrastructure/song_repository_impl.dart';
+import 'package:easy_song/features/home/infrastructure/di/dependency_injection.dart';
 import 'package:easy_song/features/home/presentation/home_page.dart';
 import 'package:easy_song/features/home/presentation/home_view_model.dart';
 import 'package:flutter/material.dart';
@@ -16,23 +13,11 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   int selectedIndex = 0;
 
-  late final HomeViewModel viewModel;
-  late final GetSongsUseCase useCase;
-  late final SongRepository repository;
-  late final SongApi api;
-
-  late final List<Widget> pages;
-
-  @override
-  void initState() {
-    super.initState();
-    api = SongApi();
-    repository = SongRepositoryImpl(api: api);
-    useCase = GetSongsUseCase(repository: repository);
-    viewModel = HomeViewModel(useCase: useCase);
-
-    pages = [HomePage(viewModel: viewModel), Text("Favorites"), Text("Profile")];
-  }
+  late final List<Widget> pages = [
+    HomePage(viewModel: getIt<HomeViewModel>()),
+    Text("Favorites"),
+    Text("Profile"),
+  ];
 
   @override
   Widget build(BuildContext context) {
