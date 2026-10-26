@@ -1,4 +1,5 @@
 import 'package:easy_song/features/home/domain/song.dart';
+import 'package:easy_song/features/home/presentation/song_detail_page.dart';
 import 'package:flutter/material.dart';
 
 class SongCard extends StatelessWidget {
@@ -9,22 +10,25 @@ class SongCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        
+        Navigator.push(context, MaterialPageRoute(builder:(context) => SongDetailPage(song: song,)));
       },
       child: Card(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(16),
-                topRight: Radius.circular(16),
-              ),
-              child: Image.network(
-                song.image,
-                height: 160,
-                width: double.infinity,
-                fit: BoxFit.cover,
+            Hero(
+              tag: song.id,
+              child: ClipRRect(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(16),
+                  topRight: Radius.circular(16),
+                ),
+                child: Image.network(
+                  song.image,
+                  height: 200,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             Padding(

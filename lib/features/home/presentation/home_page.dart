@@ -1,6 +1,6 @@
 import 'package:easy_song/features/home/domain/song.dart';
 import 'package:easy_song/features/home/presentation/home_view_model.dart';
-import 'package:easy_song/features/home/presentation/song_cart.dart';
+import 'package:easy_song/features/home/presentation/song_card.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
