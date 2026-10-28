@@ -22,4 +22,17 @@ class SongApi {
       throw Exception('Failed to load songs');
     }
   }
+
+  Future<SongDto> getSongById(int id) async {
+    final Uri uri = Uri.parse('$url/$id');
+
+    final http.Response response = await http.get(uri);
+
+    if (response.statusCode == HttpStatus.ok) {
+      final Map<String, dynamic> json = jsonDecode(response.body);
+      return SongDto.fromJson(json);
+    } else {
+      throw Exception('Failed to load song with id $id');
+    }
+  }
 }

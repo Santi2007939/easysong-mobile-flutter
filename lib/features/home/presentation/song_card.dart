@@ -1,5 +1,7 @@
 import 'package:easy_song/features/home/domain/song.dart';
-import 'package:easy_song/features/home/presentation/song_detail_page.dart';
+import 'package:easy_song/features/home/infrastructure/di/dependency_injection.dart';
+import 'package:easy_song/features/home/presentation/song_detail/song_detail_page.dart';
+import 'package:easy_song/features/home/presentation/song_detail/song_detail_view_model.dart';
 import 'package:flutter/material.dart';
 
 class SongCard extends StatelessWidget {
@@ -10,7 +12,16 @@ class SongCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder:(context) => SongDetailPage(song: song,)));
+        final SongDetailViewModel detailViewModel =
+            getIt<SongDetailViewModel>()..loadSong(song.id);
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                SongDetailPage(song: song, viewModel: detailViewModel),
+          ),
+        );
       },
       child: Card(
         child: Column(

@@ -14,7 +14,7 @@ class HomeViewModel extends ChangeNotifier {
   HomeUiState get state => _state;
 
   Future<void> loadSongs() async {
-    _state = _state.copyWith(isLoading: false);
+    _state = _state.copyWith(isLoading: true);
     notifyListeners();
 
     try {

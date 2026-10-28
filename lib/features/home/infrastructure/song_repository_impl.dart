@@ -11,12 +11,12 @@ class SongRepositoryImpl implements SongRepository {
   @override
   Future<List<Song>> getSongs() async {
     final List<SongDto> dtos = await api.getSongs();
+    return dtos.map((e) => e.toDomain()).toList();
+  }
 
-    return dtos
-        .map(
-          (e) =>
-              Song(id: e.id, title: e.title, artist: e.artist, image: e.image),
-        )
-        .toList();
+  @override
+  Future<Song> getSongById(int id) async {
+    final SongDto dto = await api.getSongById(id);
+    return dto.toDomain();
   }
 }
