@@ -1,115 +1,150 @@
 import 'package:easy_song/features/home/domain/song.dart';
+import 'package:easy_song/features/home/presentation/song_detail/song_format.dart';
 import 'package:flutter/material.dart';
-  
+
+/// Editorial layout: collapsing cover header, tonal info rows and rating bar.
 class SongDetail extends StatelessWidget {
-  const new({super.key, required this.song});
+  const SongDetail({super.key, required this.song});
   final Song song;
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme scheme = Theme.of(context).colorScheme;
+    final TextTheme text = Theme.of(context).textTheme;
+
     return Scaffold(
+      backgroundColor: scheme.surface,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            expandedHeight: 320.0,
+            expandedHeight: 300,
             pinned: true,
-            backgroundColor: Theme.of(context).colorScheme.primary,
+            backgroundColor: scheme.surface,
+            foregroundColor: scheme.onSurface,
+            // Tonal button keeps the back arrow readable over any cover
+            leading: Padding(
+              padding: const EdgeInsets.all(8),
+              child: IconButton.filledTonal(
+                onPressed: () => Navigator.of(context).pop(),
+                icon: const Icon(Icons.arrow_back),
+              ),
+            ),
             flexibleSpace: FlexibleSpaceBar(
-              title: Text(
-                song.title,
-                style: Theme.of(context).textTheme.bodyLarge
-                ),
-              background: Stack(
-              fit: StackFit.expand,
-              children: [
-                Hero(
-                  tag: song.id,
-                  child: Image.network(
-                    song.image,
-                    fit: BoxFit.cover
-                  ),
-                ),
-                const DecoratedBox(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [Colors.transparent, Colors.white]
+              background: Hero(
+                tag: song.id,
+                child: Image.network(song.image, fit: BoxFit.cover),
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(24, 24, 24, 40),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${song.genre} · ${song.year}'.toUpperCase(),
+                    style: text.labelMedium?.copyWith(
+                      color: scheme.primary,
+                      letterSpacing: 1.2,
                     ),
                   ),
+                  const SizedBox(height: 6),
+                  Text(
+                    song.title,
+                    style: text.headlineMedium?.copyWith(
+                      color: scheme.onSurface,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 16,
+                        backgroundColor: scheme.primaryContainer,
+                        foregroundColor: scheme.onPrimaryContainer,
+                        child: Text(song.artist.isNotEmpty ? song.artist[0] : '?'),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          song.artist,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: text.titleMedium?.copyWith(color: scheme.onSurfaceVariant),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                  Divider(color: scheme.outlineVariant),
+                  _DetailRow(icon: Icons.album, label: 'Album', value: song.album),
+                  _DetailRow(icon: Icons.schedule, label: 'Duration', value: song.formattedDuration),
+                  _DetailRow(icon: Icons.music_note, label: 'Genre', value: song.genre),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Rating', style: text.labelLarge?.copyWith(color: scheme.onSurfaceVariant)),
+                      Text(
+                        song.rating.toStringAsFixed(1),
+                        style: text.labelLarge?.copyWith(color: scheme.tertiary),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: LinearProgressIndicator(
+                      value: song.ratingProgress,
+                      minHeight: 8,
+                      color: scheme.tertiary,
+                      backgroundColor: scheme.surfaceContainerHighest,
+                    ),
+                  ),
+                ],
               ),
-              ]
             ),
-            ),
-    ),
-    SliverToBoxAdapter(
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              song.title,
-              style: Theme.of(context).textTheme.titleLarge
-            ),
-            Text(
-              song.artist,
-              style: Theme.of(context).textTheme.bodyMedium
-            ),
-            const SizedBox(height: 24),
-
-            Card(
-              elevation: 2,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    _buildDetailRow(Icons.album, 'Album', song.album),
-                  const Divider(height: 24),
-                  _buildDetailRow(Icons.calendar_today, 'Year', song.year.toString()),
-                  const Divider(height: 24),
-                  _buildDetailRow(Icons.access_time, 'Duration', '${song.duration ~/ 60}:${(song.duration % 60).toString().padLeft(2, '0')}'),
-                  const Divider(height: 24),
-                  _buildDetailRow(Icons.music_note, 'Genre', song.genre),
-                  const Divider(height: 24),
-                  _buildDetailRow(Icons.star, 'Rating', song.rating.toString()),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 40),
-          ],
-        ),
-      ),
-    ),
+          ),
         ],
       ),
     );
   }
+}
 
-  Widget _buildDetailRow(IconData icon, String label, String value) {
-    return Row(
-      children: [
-        Icon(icon, color: Colors.deepPurple, size: 22),
-        const SizedBox(width: 12),
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w500,
-            color: Colors.grey[700],
-          ),
+class _DetailRow extends StatelessWidget {
+  const _DetailRow({required this.icon, required this.label, required this.value});
+  final IconData icon;
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme scheme = Theme.of(context).colorScheme;
+
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      leading: Container(
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+          color: scheme.secondaryContainer,
+          borderRadius: BorderRadius.circular(12),
         ),
-        const Spacer(),
-        Text(
+        child: Icon(icon, color: scheme.onSecondaryContainer, size: 20),
+      ),
+      title: Text(label, style: TextStyle(color: scheme.onSurfaceVariant)),
+      trailing: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 180),
+        child: Text(
           value,
-          style: const TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.bold,
-          ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.end,
+          style: TextStyle(color: scheme.onSurface, fontWeight: FontWeight.w600),
         ),
-      ],
+      ),
     );
   }
 }
