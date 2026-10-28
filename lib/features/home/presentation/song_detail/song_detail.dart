@@ -4,8 +4,15 @@ import 'package:flutter/material.dart';
 
 /// Editorial layout: collapsing cover header, tonal info rows and rating bar.
 class SongDetail extends StatelessWidget {
-  const SongDetail({super.key, required this.song});
+  const SongDetail({
+    super.key,
+    required this.song,
+    required this.isFavorite,
+    required this.onToggleFavorite,
+  });
   final Song song;
+  final bool isFavorite;
+  final VoidCallback onToggleFavorite;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +36,19 @@ class SongDetail extends StatelessWidget {
                 icon: const Icon(Icons.arrow_back),
               ),
             ),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: IconButton.filledTonal(
+                  tooltip: isFavorite ? 'Remove from favorites' : 'Add to favorites',
+                  onPressed: onToggleFavorite,
+                  icon: Icon(
+                    isFavorite ? Icons.favorite : Icons.favorite_border,
+                    color: scheme.tertiary,
+                  ),
+                ),
+              ),
+            ],
             flexibleSpace: FlexibleSpaceBar(
               background: Hero(
                 tag: song.id,

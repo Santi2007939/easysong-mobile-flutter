@@ -22,11 +22,11 @@ class SongDetailPage extends StatelessWidget {
           );
         }
 
-        if (viewModel.state.isLoading) {
-          return SongDetail(song: song);
-        }
-
-        return SongDetail(song: viewModel.state.song);
+        return SongDetail(
+          song: viewModel.state.isLoading ? song : viewModel.state.song,
+          isFavorite: viewModel.state.isFavorite,
+          onToggleFavorite: () => viewModel.toggleFavorite(song.id),
+        );
       },
     );
   }

@@ -3,6 +3,7 @@ import 'package:easy_song/features/home/domain/song.dart';
 class SongDetailUiState {
   final Song song;
   final bool isLoading;
+  final bool isFavorite;
   final String? errorMessage;
 
   const SongDetailUiState({
@@ -18,17 +19,20 @@ class SongDetailUiState {
       image: ''
     ),
     this.isLoading = false,
+    this.isFavorite = false,
     this.errorMessage
   });
 
   SongDetailUiState copyWith({
     Song? song,
     bool? isLoading,
+    bool? isFavorite,
     String? errorMessage,
   }) {
     return SongDetailUiState(
       song: song ?? this.song,
       isLoading: isLoading ?? this.isLoading,
+      isFavorite: isFavorite ?? this.isFavorite,
       errorMessage: errorMessage ?? this.errorMessage,
     );
   }
