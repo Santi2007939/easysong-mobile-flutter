@@ -2,9 +2,11 @@ import 'package:easy_song/core/database/app_database.dart';
 import 'package:easy_song/features/favorites/application/add_favorite_song_use_case.dart';
 import 'package:easy_song/features/favorites/application/is_favorite_song_use_case.dart';
 import 'package:easy_song/features/favorites/application/remove_favorite_song_use_case.dart';
+import 'package:easy_song/features/favorites/application/watch_favorite_songs_use_case.dart';
 import 'package:easy_song/features/favorites/domain/favorite_song_repository.dart';
 import 'package:easy_song/features/favorites/infrastructure/favorite_song_repository_impl.dart';
 import 'package:easy_song/features/favorites/infrastructure/local/favorite_song_dao.dart';
+import 'package:easy_song/features/favorites/presentation/favorites_view_model.dart';
 import 'package:easy_song/features/home/application/get_song_by_id_use_case.dart';
 import 'package:easy_song/features/home/application/get_songs_use_case.dart';
 import 'package:easy_song/features/home/domain/song_repository.dart';
@@ -61,6 +63,12 @@ void _setupFavorites() {
   getIt.registerLazySingleton<IsFavoriteSongUseCase>(
     () => IsFavoriteSongUseCase(repository: getIt<FavoriteSongRepository>()),
   );
+  getIt.registerLazySingleton<WatchFavoriteSongsUseCase>(
+    () => WatchFavoriteSongsUseCase(
+      favoriteSongRepository: getIt<FavoriteSongRepository>(),
+      songRepository: getIt<SongRepository>(),
+    ),
+  );
 }
 
 // ViewModels hold screen state, a new instance every time
@@ -75,5 +83,8 @@ void _setupViewModels() {
       addFavoriteSongUseCase: getIt<AddFavoriteSongUseCase>(),
       removeFavoriteSongUseCase: getIt<RemoveFavoriteSongUseCase>(),
     ),
+  );
+  getIt.registerFactory<FavoritesViewModel>(
+    () => FavoritesViewModel(useCase: getIt<WatchFavoriteSongsUseCase>()),
   );
 }

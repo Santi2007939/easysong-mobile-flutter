@@ -8,4 +8,6 @@ abstract class FavoriteSongRepository {
   Future<bool> isFavorite(int songId);
 
   Future<List<FavoriteSong>> getAll();
+
+  Stream<List<FavoriteSong>> watchAll();
 }

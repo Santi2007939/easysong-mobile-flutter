@@ -28,6 +28,13 @@ class FavoriteSongRepositoryImpl implements FavoriteSongRepository {
     final List<FavoriteSongEntity> entities = await dao.findAll();
     return entities.map((e) => e.toDomain()).toList();
   }
+
+  @override
+  Stream<List<FavoriteSong>> watchAll() {
+    return dao.watchAll().map(
+      (entities) => entities.map((e) => e.toDomain()).toList(),
+    );
+  }
 }
 
 extension on FavoriteSongEntity {

@@ -25,4 +25,9 @@ class FavoriteSongDao extends DatabaseAccessor<AppDatabase>
   Future<List<FavoriteSongEntity>> findAll() {
     return select(favoriteSongs).get();
   }
+
+  // Emits again every time the table changes
+  Stream<List<FavoriteSongEntity>> watchAll() {
+    return select(favoriteSongs).watch();
+  }
 }
